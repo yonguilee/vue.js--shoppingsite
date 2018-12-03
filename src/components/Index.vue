@@ -1,5 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container main">
+    <div class="search">
+      <div class="searching_box input-field col s6">    
+          <input id="icon_prefix" type="text" class="validate" v-model="search_data"  placeholder="Searching..">
+           <i class="clear material-icons grey-text" v-if="search_data" @click="resetSearch">close</i>
+      </div>
+    </div>
     <h2>Item List</h2>
     <p class="item_quantity">총 <span>{{items.length}}</span>개의 상품</p>
     
@@ -12,9 +18,9 @@
       <a href="#" @click="deletebtn=true">Delete</a>
     </div>
     
-
+    <!-- item box -->
     <div class="index">
-      <div class="card" v-for="item in items" :key="item.id">
+      <div class="card" v-for="item in filteredItems" :key="item.id">
           <div class="card-image">
               <img src="@/assets/1.jpg">
           </div>
@@ -32,7 +38,7 @@
               <p class="cont">{{item.content}}</p>
                     
               <ul class="tags">
-                  <li v-for= "(tag,index) in item.tags" :key="index">
+                  <li v-for= "(tag,index) in item.tags" :key="index"  @click="findword">
                     <span class="tag">#{{tag}}</span>
                   </li>
               </ul>
@@ -65,6 +71,7 @@
 import db from '@/firebase/init'
 import firebase from 'firebase'
 import moment from 'moment'
+import searchMixin from '@/mixins/searchMixin'
 
 
 export default {
@@ -74,10 +81,22 @@ export default {
       moment: moment,
       deletebtn: false,
       editbtn: false,
-      items: []
+      items: [],
+      search_data: ''
     }
   },
   methods: {
+    findword: function(e){
+        const fw =e.target.innerHTML;
+        const fw_cut=fw.slice(1);
+        console.dir(fw_cut);
+        console.log(e.target.nodeName);
+        this.search_data = fw_cut;
+    },
+    resetSearch(){
+      this.search_data = ''
+    },
+    /***sorting***/
     sortByPrice(){//정렬 제대로 안됨. 
       this.items.sort((a,b)=> a.price < b.price ? -1 : a.price > b.price ? 1 : 0)
     },
@@ -107,7 +126,7 @@ export default {
     },
     addWish(id){        
     db.collection('wishitems').add({
-        item_id: this.item.id,
+        item_id: this.id,
         item_slug: this.item.slug,
         user: this.user.id
     }).then(() => {
@@ -146,11 +165,35 @@ export default {
         console.log('get current user id')
         console.log(this.user.id)
     })
-  }
+  },
+  mixins:[searchMixin]
+
 }
 </script>
 
 <style scoped>
+.main{
+  position: relative;
+}
+.search{
+    width: 25%;
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.clear{
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 5px;
+}
+.searching_box{
+    margin: 0;
+}
+.searching_box i{
+    float:right;
+}
+
 .sort{
   float: left;
   text-align: center;
@@ -194,7 +237,7 @@ h2{
 }
 .index{
   border-top: 2px solid #ccc;
-  padding-top:40px;
+  padding-top:20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
