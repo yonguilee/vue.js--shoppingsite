@@ -1,6 +1,6 @@
 <template>
   <div class="cart container">
-    <h2> {{user.id}}'s Cart </h2>
+    <h2 @click="checkItems"> {{user.id}}'s Cart </h2>
     <p class="item_quantity">총 <span>{{cartitems.length}}</span>개의 상품</p>
 
     <table class="cart_table">
@@ -27,11 +27,11 @@
       <table>
         <tr>
           <th>총 수량</th>
-          <td> 5</td>
+          <td>{{quantitySum()}}</td>
         </tr>
         <tr>
           <th>총 금액</th>
-          <td>170,000</td>
+          <td>{{addComma(priceSum())}}</td>
         </tr>
       </table>
       
@@ -53,7 +53,9 @@ export default {
       columns:['No','User', 'Product ID', 'Title', 'Color', 'Size', 'Price', 'Quantity' ,'Total'],
       cartitems: [],
       user: null,
-      prices:[],
+      matchitems:[],
+      // totalPrice: null,
+      // totalQuantity: null
     }
   },
   created(){
@@ -66,6 +68,7 @@ export default {
         cartitem.id =  doc.id
         this.cartitems.push(cartitem) 
       })
+      console.table(this.cartitems)
     })
 
     //get current user
@@ -76,10 +79,11 @@ export default {
             this.user.id = doc.id
         })
         console.log('get current user id')
-        console.log(this.user.id)
+        console.log(this.user)
         console.log(this.user.alias)
 
     })
+
 
     // db.collection('cartitems').get()
     // .then(querySnapshot =>{
@@ -108,10 +112,20 @@ export default {
     // })
   },
   methods:{
-    // priceSum(){
-    //   this.prices.push(this.cartitems.price)
-    //   console.log(this.prices);
-    // },
+    priceSum(){
+        return this.cartitems.reduce((prev,cur) => prev + cur.total,0)
+    },
+    quantitySum(){
+        return this.cartitems.reduce((prev,cur) => prev + cur.quantity,0)
+    },
+    checkItems(){
+      for(var i=0; i<=this.cartitems.length; i++){
+        if(this.cartitem.user == this.user.alias){
+          this.matchitems.push(this.cartitem)
+          console.log(this.matchitems)
+        }
+      }
+    },
     addComma(num) {
         var regexp = /\B(?=(\d{3})+(?!\d))/g
         return num.toString().replace(regexp, ',')
@@ -135,7 +149,8 @@ export default {
         }
       
     }
-  }
+  },
+
 }
 </script>
 
