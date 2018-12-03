@@ -2,10 +2,17 @@
   <div class="container">
     <h2>Item List</h2>
     <p class="item_quantity">총 <span>{{items.length}}</span>개의 상품</p>
+    
+    <div class="sort">
+      <a href="#" @click="sortByDate()">최신순</a>
+      <a href="#" @click="sortByPrice()">가격순</a>
+    </div>
     <div class="edit_delete">
       <a href="#" @click="editbtn=true">Edit</a>
       <a href="#" @click="deletebtn=true">Delete</a>
     </div>
+    
+
     <div class="index">
       <div class="card" v-for="item in items" :key="item.id">
           <div class="card-image">
@@ -71,6 +78,12 @@ export default {
     }
   },
   methods: {
+    sortByPrice(){//정렬 제대로 안됨. 
+      this.items.sort((a,b)=> a.price < b.price ? -1 : a.price > b.price ? 1 : 0)
+    },
+    sortByDate(){
+      this.items.sort((a,b)=> a.date < b.date ? -1 : a.date > b.date ? 1 : 0).reverse()
+    },
     addComma(num) {
       var regexp = /\B(?=(\d{3})+(?!\d))/g
       return num.toString().replace(regexp, ',')
@@ -138,6 +151,17 @@ export default {
 </script>
 
 <style scoped>
+.sort{
+  float: left;
+  text-align: center;
+  height: 44px;
+  line-height: 44px;
+}
+
+.sort a{
+  color:#666;
+  margin: 0 5px;
+}
 .edit_delete{
   overflow:hidden;
 }
@@ -152,7 +176,7 @@ export default {
   font-weight: bold;
 }
 
-.edit_delete a:hover{
+a:hover{
  color: #ff7657;
 }
 
@@ -172,8 +196,8 @@ h2{
   border-top: 2px solid #ccc;
   padding-top:40px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 30px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
 }
 
 .divider {
