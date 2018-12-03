@@ -1,6 +1,6 @@
 # shopping
 
-> A Vue.js project
+> Shopping site using Vue.ja and firebase
 
 ## Build Setup
 
