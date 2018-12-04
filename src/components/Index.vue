@@ -82,7 +82,8 @@ export default {
       deletebtn: false,
       editbtn: false,
       items: [],
-      search_data: ''
+      search_data: '',
+      images:[]
     }
   },
   methods: {

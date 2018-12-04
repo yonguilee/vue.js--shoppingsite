@@ -5,6 +5,11 @@
     <form @submit.prevent="Additem">
         <div class="row">
           <div class="input-field col s8">
+            <img :src="imageUrl" height="150">
+            <button class="btn waves-effect waves-light deep-orange lighten-1" @click="onPickFile">Upload Image</button>
+            <input type="file" name="file" style="display:none" ref="fileInput" accept="image/*" @change="onFilePicked">          
+          </div>
+          <div class="input-field col s8">
             <p class="sub_title">Item Title</p>
             <input type="text" name="title" class="validate" v-model="title">          
           </div>
@@ -113,6 +118,8 @@ export default {
   name: 'Add',
   data () {
     return {
+      imageUrl:'',
+      image: null,
       title: null,
       price: null,
       content: null,
@@ -141,6 +148,24 @@ export default {
       })
   },
   methods: {
+    onPickFile(){
+      this.$refs.fileInput.click()
+    },
+    onFilePicked(event){
+      const files = event.target.files
+      let filename = files[0].name
+      if(filename.lastIndexOf('.') <=0){
+        return alert('유효하지 않은 파일입니다.')
+      }
+      const fileReader = new FileReader()
+      fileReader.addEventListener('load', () =>{
+        this.imageUrl= fileReader.result
+      })
+      fileReader.readAsDataURL(files[0])
+      this.image=files[0]
+
+      console.log(this.image)
+    },
     Additem(){ //form의 버튼을 누르면 자동으로 이 submit이 실행되나봄.
           if(this.title && this.price && this.content){
               this.feedback=null
@@ -151,32 +176,65 @@ export default {
                   lower: true //소문자로하기.
               })
               console.log(this.slug);//slug확인해보기
-
+ 
               db.collection('items').add({
-                  title: this.title,
-                  price: this.price,
-                  content: this.content,
-                  tags: this.tags,
-                  colors: this.colors,
-                  S: this.S,
-                  M: this.M,
-                  L: this.L,
-                  date: Date.now(),
-                  slug: this.slug,
-                  wish: false,
-                  writer: this.user.id
-              }).then(() => {
-                  this.$swal({
+                title: this.title,
+                price: this.price,
+                content: this.content,
+                tags: this.tags,
+                colors: this.colors,
+                S: this.S,
+                M: this.M,
+                L: this.L,
+                date: Date.now(),
+                slug: this.slug,
+                writer: this.user.id
+              })
+              // .then((data) => {//get data key for mathcing with picture
+              //   key = data.key
+              //   return key
+              // })
+              // .then((key)=>{//
+              //   const filename = this.image.name
+              //   const ext = filename.slice(filename.lastIndexOf('.'))
+              //   return firebase.storage().ref('items/'+key+'.'+ext).put(this.image)
+              // }).then((fileData)=>{
+              //   imageUrl = fileData.metadata.downloadURLs[0]
+              //   return firebase.sotrage().ref('items').child(key).update({imageUrl: imageUrl})
+              // })
+              
+              .then(()=>{
+                //const ext = filename.slice(this.image.name.lastIndexOf('.'))
+                firebase.storage().ref('items/'+this.slug).put(this.image).snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                  console.log('File available at', downloadURL);
+                  
+                })
+
+              // }).then(()=>{
+              //   this.imageUrl = fileData.metadata.downloadURL
+              //   return db.collection('items').where('slug', '==', this.slug).update({imageUrl: this.imageUrl})
+              //   // return firebase.sotrage().ref('items').child(key).update({imageUrl: imageUrl})
+              }).then(()=>{
+                // this.imageUrl = fileData.metadata.downloadURLs[0]
+                // consol.log(this.imageUrl)
+                // // db.collection('items').where('slug','==',this.slug).update({
+                // //   imageUrl: this.imageUrl
+                // // })
+                
+                //db.collection('items').where('slug', '==', this.slug).update({imageUrl: downloadURL})
+                this.$swal({
                     position: 'center',
                     type: 'success',
                     title: '상품등록 완료',
                     showConfirmButton: false,
                     timer: 1000
                  })
-                  this.$router.push({ name: 'Index'})//메인으로 리다이렉트
+                 this.$router.push({ name: 'Index'})//메인으로 리다이렉트
               }).catch(err => {
                   console.log(err);
               })
+
+
 
           }else {
               this.feedback= '상품정보를 입력해주세요!'
