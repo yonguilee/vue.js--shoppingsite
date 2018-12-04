@@ -8,16 +8,16 @@
     </div>
     <h2>Item List</h2>
     <p class="item_quantity">총 <span>{{items.length}}</span>개의 상품</p>
-    
-    <div class="sort">
-      <a href="#" @click="sortByDate()">최신순</a>
-      <a href="#" @click="sortByPrice()">가격순</a>
+    <div class="sort_ed">
+      <div class="sort">
+        <a href="#" @click="sortByDate()">최신순</a>
+        <a href="#" @click="sortByPrice()">가격순</a>
+      </div>
+      <div class="edit_delete">
+        <a href="#" @click="editbtn=true">Edit</a>
+        <a href="#" @click="deletebtn=true">Delete</a>
+      </div>
     </div>
-    <div class="edit_delete">
-      <a href="#" @click="editbtn=true">Edit</a>
-      <a href="#" @click="deletebtn=true">Delete</a>
-    </div>
-    
     <!-- item box -->
     <div class="index">
       <div class="card" v-for="item in filteredItems" :key="item.id">
@@ -194,7 +194,9 @@ export default {
 .searching_box i{
     float:right;
 }
-
+.sort_ed{
+  overflow:hidden;
+}
 .sort{
   float: left;
   text-align: center;
@@ -207,11 +209,11 @@ export default {
   margin: 0 5px;
 }
 .edit_delete{
-  overflow:hidden;
+  float:right;
+
 }
 .edit_delete a{
   display: inline-block;
-  float: right;
   border: 1px solid #eee;
   border-radius: 10px;
   padding:5px 10px;

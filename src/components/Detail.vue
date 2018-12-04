@@ -78,7 +78,7 @@
                 <h4 class="sub_title">Quantity </h4>
                 <div class="quantity_box">
                     <i class="material-icons" @click="subtractQuantity">remove</i>
-                    <span class="quantity_value" v-model="quantityNumber">{{quantityNumber}}</span>
+                    <span class="quantity_value">{{quantityNumber}}</span>
                     <i class="material-icons" @click="addQuantity">add</i>                    
                 </div>
             </div>
@@ -87,16 +87,27 @@
             <!--listing items-->
             <div class="listing" v-if="listing_item">
                 <div class="divider"></div>
-                <p>{{item.id}}</p>
-                <p>{{user.id}}</p>
-                <p v-model="colorValue">{{colorValue}}</p>
-                <p v-model="sizeValue">{{sizeValue}}</p>
-                <p v-model="quantityValue">{{quantityValue}}</p>
-                <p v-model="total">{{total}}</p>
+                <table class="detail_table">
+                    <tr class="table title">
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr class="table_value">
+                        <td>{{colorValue}}</td>
+                        <td>{{sizeValue}}</td>
+                        <td>{{quantityValue}}</td>
+                        <td>{{addComma(total)}}</td>
+                    </tr>
+                </table>
+                <p class="listing_reset" @click="resetList">선택 초기화</p>
+                <p class="hide">{{item.id}}</p>
+                <p class="hide">{{user.id}}</p>
             </div>
             <div class="icons">
-                <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addWish">찜하기<i class="material-icons white-text">favorite</i></a>
-                <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addCart">장바구니에 담기<i class="material-icons white-text">local_grocery_store</i></a>
+                <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addWish">찜하기</a>
+                <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addCart">장바구니에 담기</a>
             </div>
                   
         </div>
@@ -170,29 +181,29 @@ export default {
     },
     addQuantity(){
         if (this.quantityNumber>=0){
-            this.quantityNumber++;
+            this.quantityNumber++
         }
     },
     subtractQuantity(){
         if (this.quantityNumber>0){
-            this.quantityNumber--;
+            this.quantityNumber--
         }
     },
     addingList(){
     //get color value
-    var colors = document.getElementsByName('color');
-    var colorValue; 
+    var colors = document.getElementsByName('color')
+    var colorValue
     for(var i=0; i<colors.length; i++) {
         if(colors[i].checked) {
-            this.colorValue = colors[i].value;
+            this.colorValue = colors[i].value
         }
     }
     //get size value
-    var sizes = document.getElementsByName('size');
+    var sizes = document.getElementsByName('size')
     var sizeValue; 
     for(var j=0; j<sizes.length; j++) {
         if(sizes[j].checked) {
-            this.sizeValue = sizes[j].value;
+            this.sizeValue = sizes[j].value
         }
     }
     //get quantity value
@@ -206,6 +217,16 @@ export default {
     } else {
         this.feedback = ' 원하시는 색상, 사이즈, 수량을 선택해주세요.'
     }
+    },
+    resetList(){
+        this.feedback= null
+        this.colorValue= null
+        this.sizeValue= null
+        this.quantityValue= null
+        this.total= null
+        this.quantityNumber= 0
+        //document.getElementsByName('size').checked = false
+        this.listing_item = false
     },
     addCart(){ 
     if(this.listing_item){
@@ -282,7 +303,6 @@ export default {
     font-size: 2em;
     display:inline-block;
     margin:0 20px 5px 0;
-
 }
 .writer{
     display:inline-block;
@@ -366,20 +386,34 @@ export default {
 .adding_btn{
     margin-top: 20px;
 }
+
+.detail_table{
+    width: 80%;
+    margin-left:30px;
+}
+.detail_table th, td{
+    text-align: center;
+}
+.listing{
+    overflow: hidden;
+}
+.listing .listing_reset{
+    float: right;
+    cursor: pointer;
+}
 .detail .icons{
     margin: 40px 0;
 }
 .detail .icons a{
     line-height: 36px;
     text-align: center;
-    margin: 0 10px;
+    margin: 0 5px;
 }
 .detail .icons i{
     margin-top: 2px;
 }
 
 .description{
-
     width: 90%;
     margin:20px auto;
 }
