@@ -157,6 +157,7 @@ export default {
     //get item data 
     let ref = db.collection('items').where('slug', '==', this.$route.params.item_slug)
     ref.get().then(snapshot => {
+        console.log("items collection call where slug!!!!!!!!"),
         snapshot.forEach(doc => {
             //console.log(doc.data());
             this.item = doc.data()
@@ -164,8 +165,9 @@ export default {
         })
     })
 
+    let currentuseruid = firebase.auth().currentUser.uid;
     //get current user
-    db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
+    db.collection('users').where('user_id', '==', "currentuseruid").get()
     .then(snapshot=>{
         snapshot.forEach(doc => {
             this.user =doc.data(),

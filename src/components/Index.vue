@@ -99,10 +99,11 @@ export default {
     },
     /***sorting***/
     sortByPrice(){//정렬 제대로 안됨. 
-      this.items.sort((a,b)=> a.price < b.price ? -1 : a.price > b.price ? 1 : 0)
+      console.table(this.items);
+      this.items.sort((a,b)=> parseInt(a.price) < parseInt(b.price) ? -1 : parseInt(a.price) > parseInt(b.price) ? 1 : 0)
     },
     sortByDate(){
-      this.items.sort((a,b)=> a.date < b.date ? -1 : a.date > b.date ? 1 : 0).reverse()
+      this.items.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : 0)
     },
     addComma(num) {
       var regexp = /\B(?=(\d{3})+(?!\d))/g
@@ -153,19 +154,49 @@ export default {
         let item = doc.data()
         item.id =  doc.id
         this.items.push(item)
+
       })
     })
 
-    //get current user
-    db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
-    .then(snapshot=>{
-        snapshot.forEach(doc => {
-            this.user =doc.data(),
-            this.user.id = doc.id
-        })
-        console.log('get current user id')
-        console.log(this.user.id)
-    })
+    
+       // console.log("test LJH", firebase.auth().currentUser)
+      // //get current user
+      // var tempData = firebase.auth().currentUser.uid
+      // //var tempData = "k3ondeT9zIOc3PuaR7P6ApKd8tu2"
+
+      // db.collection('users').where('user_id','==','tempData').get()
+      //   // db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
+      //   .then(snapshot=>{
+      //     console.log("snapshot", snapshot),
+      //       snapshot.forEach(doc => {
+      //         console.log("doc data", doc.data());
+      //           // this.user =doc.data(),
+      //           // this.user.id = doc.id
+      //       })
+        
+      //   console.log('get current user id')
+      //       // console.log(this.user.id)
+      //   })
+    
+            //     console.log("test LJH", firebase.auth().currentUser)
+            // //get current user
+            // var tempData = firebase.auth().currentUser.uid
+            // //var tempData = "k3ondeT9zIOc3PuaR7P6ApKd8tu2"
+            // db.collection('users').where('user_id','==','tempData').get()
+            // // db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
+            // .then(snapshot=>{
+            //   console.log("snapshot", snapshot),
+            //     snapshot.forEach(doc => {
+            //       console.log("doc data", doc.data());
+            //         // this.user =doc.data(),
+            //         // this.user.id = doc.id
+            //     })
+            
+            // console.log('get current user id')
+            //     // console.log(this.user.id)
+            // })
+
+
   },
   mixins:[searchMixin]
 

@@ -5,7 +5,7 @@
 
     <table class="cart_table">
         <tr class="table title">
-            <th v-for="(column,index) in columns" :key="column.index">{{column}}</th>
+            <th v-for="column in columns" :key="column.index">{{column}}</th>
             <th>　　</th>
         </tr>
 
@@ -72,15 +72,18 @@ export default {
     })
 
     //get current user
+    console.log("current uid", firebase.auth().currentUser.uid);
     db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
+       //db.collection('users').where('user_id','==','gomjunho').get()
     .then(snapshot=>{
-        snapshot.forEach(doc => {
-            this.user =doc.data(),
-            this.user.id = doc.id
-        })
-        console.log('get current user id')
-        console.log(this.user)
-        console.log(this.user.alias)
+      snapshot.forEach(doc => {
+        this.user =doc.data(),
+        //console.log(this.user),
+        this.user.id = doc.id//,
+        //console.log('get current user id'),
+        //console.log(this.user.alias)
+      })
+
 
     })
 
