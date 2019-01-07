@@ -18,6 +18,9 @@ npm run build
 npm run build --report
 ```
 
+## structure
+![structure preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/shopping.png)
+
 ## Previews
 
 #### Login, Delete & Edit Item
