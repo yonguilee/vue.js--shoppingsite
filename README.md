@@ -1,6 +1,6 @@
-# shopping
+# Shopping site
 
-> Shopping site using Vue.ja and firebase
+> VScode, Vue.js, firebase, materialize
 
 ## Build Setup
 
@@ -18,4 +18,19 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Previews
+
+#### Login, Delete & Edit Item
+![login preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/logindeleteedit.gif)
+
+#### Add & Sorting Item
+![add preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/addsorting.gif)
+
+#### Adding item into Cart
+![cart preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/cart.gif)
+
+#### Add Comment
+![comment preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/comment.gif)
+
+#### Searching
+![searching preview](https://github.com/yonguilee/vue.js--shoppingsite/blob/master/src/previews/searching.gif)
