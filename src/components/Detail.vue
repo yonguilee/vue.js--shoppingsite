@@ -6,7 +6,6 @@
         </div>
         
         <div class="item-content">
-            <!-- <i class="material-icons delete" @click="deleteSmoothie(item.id)">delete</i> -->
             <div class="title_writer">
                 <h3 class="grey-text">{{item.title}}</h3> 
                 <p class="writer">by. {{item.writer}}</p>
@@ -17,41 +16,41 @@
             </div>
             <div class="divider"></div>
 
-             <!--color pick-->
-            <div class="color_pick">
-            <h4 class="sub_title">Color </h4>
-            <p v-show="item.colors.includes('Red')">
-                <label>
-                <input name="color" type="radio" value="Red"/>
-                <span>Red</span>
-                </label>
-            </p>
-            <p v-show="item.colors.includes('Yellow')">
-                <label>
-                <input name="color" type="radio" value="Yellow"/>
-                <span>Yellow</span>
-                </label>
-            </p>
-            <p v-show="item.colors.includes('Green')">
-                <label>
-                <input name="color" type="radio"  value="Green"/>
-                <span>Green</span>
-                </label>
-            </p>
-            <p v-show="item.colors.includes('White')">
-                <label>
-                <input name="color" type="radio"  value="White"/>
-                <span>White</span>
-                </label>
-            </p>
-            <p v-show="item.colors.includes('Black')">
-                <label>
-                <input name="color" type="radio"  value="Black"/>
-                <span>Black</span>
-                </label>
-            </p>
+<!--color pick-->
+            <div class="color_pick" v-show="item.colors">
+                <h4 class="sub_title">Color </h4>
+                <p v-show="item.colors.includes('Red')">
+                    <label>
+                    <input name="color" type="radio" value="Red"/>
+                    <span>Red</span>
+                    </label>
+                </p>
+                <p v-show="item.colors.includes('Yellow')">
+                    <label>
+                    <input name="color" type="radio" value="Yellow"/>
+                    <span>Yellow</span>
+                    </label>
+                </p>
+                <p v-show="item.colors.includes('Green')">
+                    <label>
+                    <input name="color" type="radio"  value="Green"/>
+                    <span>Green</span>
+                    </label>
+                </p>
+                <p v-show="item.colors.includes('White')">
+                    <label>
+                    <input name="color" type="radio"  value="White"/>
+                    <span>White</span>
+                    </label>
+                </p>
+                <p v-show="item.colors.includes('Black')">
+                    <label>
+                    <input name="color" type="radio"  value="Black"/>
+                    <span>Black</span>
+                    </label>
+                </p>
             </div>
-             <!--size pick-->
+<!--size pick-->
             <div class="size_pick">
                 <h4 class="sub_title">Size </h4>
                 <p>
@@ -73,7 +72,7 @@
                     </label>
                 </p>
             </div>
-            <!--quantity pick-->
+<!--quantity pick-->
             <div class="quantity_pick">
                 <h4 class="sub_title">Quantity </h4>
                 <div class="quantity_box">
@@ -84,7 +83,7 @@
             </div>
             <p v-if="feedback" class="red-text">{{feedback}}</p>
             <a class="waves-effect waves-light btn deep-orange lighten-1 adding_btn" @click="addingList">추가하기</a>
-            <!--listing items-->
+<!--listing items-->
             <div class="listing" v-if="listing_item">
                 <div class="divider"></div>
                 <table class="detail_table">
@@ -103,10 +102,10 @@
                 </table>
                 <p class="listing_reset" @click="resetList">선택 초기화</p>
                 <p class="hide">{{item.id}}</p>
-                <p class="hide">{{user.id}}</p>
+                <!-- <p class="hide">{{user.id}}</p> -->
             </div>
             <div class="icons">
-                <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addWish">찜하기</a>
+                <!-- <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addWish">찜하기</a> -->
                 <a class="waves-effect waves-light btn deep-orange lighten-1" @click="addCart">장바구니에 담기</a>
             </div>
                   
@@ -150,7 +149,6 @@ export default {
         quantityValue: null,
         total: null,
         feedback: null,
-        user: null
     }
   },
   created(){
@@ -163,23 +161,24 @@ export default {
             this.item = doc.data()
             this.item.id = doc.id
         })
+        console.log(this.item);
     })
 
-    let currentuseruid = firebase.auth().currentUser.uid;
     //get current user
-    db.collection('users').where('user_id', '==', "currentuseruid").get()
+    db.collection('users').where('user_id', '==', firebase.auth().currentUser.uid).get()
     .then(snapshot=>{
         snapshot.forEach(doc => {
             this.user =doc.data(),
             this.user.id = doc.id
         })
         console.log('get current user id')
+        console.log(this.user.id)
     })
   },
   methods: {
     addComma(num) {
-    var regexp = /\B(?=(\d{3})+(?!\d))/g
-    return num.toString().replace(regexp, ',')
+        var regexp = /\B(?=(\d{3})+(?!\d))/g
+        return num.toString().replace(regexp, ',')
     },
     addQuantity(){
         if (this.quantityNumber>=0){
@@ -192,33 +191,32 @@ export default {
         }
     },
     addingList(){
-    //get color value
-    var colors = document.getElementsByName('color')
-    var colorValue
-    for(var i=0; i<colors.length; i++) {
-        if(colors[i].checked) {
-            this.colorValue = colors[i].value
+        //get color value
+        var colors = document.getElementsByName('color')
+        var colorValue
+        for(var i=0; i<colors.length; i++) {
+            if(colors[i].checked) {
+                this.colorValue = colors[i].value
+            }
         }
-    }
-    //get size value
-    var sizes = document.getElementsByName('size')
-    var sizeValue; 
-    for(var j=0; j<sizes.length; j++) {
-        if(sizes[j].checked) {
-            this.sizeValue = sizes[j].value
+        //get size value
+        var sizes = document.getElementsByName('size')
+        var sizeValue; 
+        for(var j=0; j<sizes.length; j++) {
+            if(sizes[j].checked) {
+                this.sizeValue = sizes[j].value
+            }
         }
-    }
-    //get quantity value
-    this.quantityValue = this.quantityNumber
-    
-    if(this.colorValue && this.sizeValue && this.quantityValue){
-        this.listing_item =true
-        this.feedback=null
-        this.total = this.item.price * this.quantityValue            
-
-    } else {
-        this.feedback = ' 원하시는 색상, 사이즈, 수량을 선택해주세요.'
-    }
+        //get quantity value
+        this.quantityValue = this.quantityNumber
+        
+        if(this.colorValue && this.sizeValue && this.quantityValue){
+            this.listing_item =true
+            this.feedback=null
+            this.total = this.item.price * this.quantityValue
+        } else {
+            this.feedback = ' 원하시는 색상, 사이즈, 수량을 선택해주세요.'
+        }
     },
     resetList(){
         this.feedback= null
@@ -231,51 +229,51 @@ export default {
         this.listing_item = false
     },
     addCart(){ 
-    if(this.listing_item){
-        this.feedback=null
-        db.collection('cartitems').add({
-            title: this.item.title,
-            price: this.item.price,
-            product_id: this.item.id,
-            color: this.colorValue,
-            size: this.sizeValue,
-            quantity: this.quantityValue,
-            total:this.total,
-            user: this.user.id
-        }).then(() => {
-        this.$swal({
-            position: 'center',
-            type: 'success',
-            title: '장바구니 담기 완료',
-            showConfirmButton: false,
-            timer: 1000
-        })
-        this.$router.push({ name: 'Cart'})
-        }).catch(err => {
-            console.log(err);
-        })
+        if(this.listing_item){
+            this.feedback=null
+            db.collection('cartitems').add({
+                title: this.item.title,
+                price: this.item.price,
+                product_id: this.item.id,
+                color: this.colorValue,
+                size: this.sizeValue,
+                quantity: this.quantityValue,
+                total:this.total,
+                user: this.user.id
+            }).then(() => {
+            this.$swal({
+                position: 'center',
+                type: 'success',
+                title: '장바구니 담기 완료',
+                showConfirmButton: false,
+                timer: 1000
+            })
+            this.$router.push({ name: 'Cart'})
+            }).catch(err => {
+                console.log(err);
+            })
 
         }else {
             this.feedback= '장바구니 담기 실패. Try it again Please!'
         }
     },
     addWish(){        
-    db.collection('wishitems').add({
-        item_id: this.item.id,
-        item_slug: this.item.slug,
-        user: this.user.id
-    }).then(() => {
-    this.$swal({
-        position: 'center',
-        type: 'success',
-        title: '찜 완료',
-        showConfirmButton: false,
-        timer: 1000
-    })
-    this.$router.push({ name: 'Wish'})
-    }).catch(err => {
-        console.log(err);
-    })
+        db.collection('wishitems').add({
+            item_id: this.item.id,
+            item_slug: this.item.slug,
+            user: this.user.id
+        }).then(() => {
+            this.$swal({
+                position: 'center',
+                type: 'success',
+                title: '찜 완료',
+                showConfirmButton: false,
+                timer: 1000
+            })
+            this.$router.push({ name: 'Wish'})
+        }).catch(err => {
+            console.log(err);
+        })
     }  
   }
 }

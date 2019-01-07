@@ -21,9 +21,9 @@
     <!-- item box -->
     <div class="index">
       <div class="card" v-for="item in filteredItems" :key="item.id">
-          <div class="card-image">
+          <!-- <div class="card-image">
               <img src="@/assets/1.jpg">
-          </div>
+          </div> -->
           <div class="card-content">
 
               <router-link :to="{ name: 'Detail', params: {item_slug: item.slug}}">
@@ -56,8 +56,6 @@
                   </li>
                 </ul>
                 <ul class="right_icon">
-                    <li @click="addWish(item.id)"><i class="material-icons grey-text">favorite</i></li>
-                    <li><i class="material-icons pink-text">favorite</i></li>
                     <li><router-link :to="{ name: 'Detail', params: {item_slug: item.slug}}"><i class="material-icons grey-text">local_grocery_store</i></router-link></li>
                 </ul>
               </div>
@@ -126,24 +124,7 @@ export default {
       })
       
     },
-    addWish(id){        
-    db.collection('wishitems').add({
-        item_id: this.id,
-        item_slug: this.item.slug,
-        user: this.user.id
-    }).then(() => {
-    this.$swal({
-        position: 'center',
-        type: 'success',
-        title: '찜 완료',
-        showConfirmButton: false,
-        timer: 1000
-    })
-    this.$router.push({ name: 'Wish'})
-    }).catch(err => {
-        console.log(err);
-    })
-    }
+
 
   },
   created(){
@@ -159,10 +140,10 @@ export default {
     })
 
     
-       // console.log("test LJH", firebase.auth().currentUser)
-      // //get current user
-      // var tempData = firebase.auth().currentUser.uid
-      // //var tempData = "k3ondeT9zIOc3PuaR7P6ApKd8tu2"
+      // console.log("test LJH", firebase.auth().currentUser)
+      //get current user
+      //var tempData = firebase.auth().currentUser.uid
+      //var tempData = "k3ondeT9zIOc3PuaR7P6ApKd8tu2"
 
       // db.collection('users').where('user_id','==','tempData').get()
       //   // db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()

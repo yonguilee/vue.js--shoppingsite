@@ -53,9 +53,7 @@ export default {
       columns:['No','User', 'Product ID', 'Title', 'Color', 'Size', 'Price', 'Quantity' ,'Total'],
       cartitems: [],
       user: null,
-      matchitems:[],
-      // totalPrice: null,
-      // totalQuantity: null
+      matchitems:[]
     }
   },
   created(){
@@ -74,45 +72,17 @@ export default {
     //get current user
     console.log("current uid", firebase.auth().currentUser.uid);
     db.collection('users').where('user_id','==',firebase.auth().currentUser.uid).get()
-       //db.collection('users').where('user_id','==','gomjunho').get()
     .then(snapshot=>{
       snapshot.forEach(doc => {
         this.user =doc.data(),
-        //console.log(this.user),
+
         this.user.id = doc.id//,
-        //console.log('get current user id'),
-        //console.log(this.user.alias)
+
       })
 
 
     })
 
-
-    // db.collection('cartitems').get()
-    // .then(querySnapshot =>{
-    //   querySnapshot.forEach(doc =>{
-    //     if(doc.user == this.user.alias){
-    //       let cartitem = doc.data()
-    //       cartitem.id =  doc.id
-    //       this.cartitems.push(cartitem) 
-    //     }
-    //   })
-    // }).catch(function(error) {
-    //     console.log("Error getting documents: ", error);
-    // })
-
-    // db.collection('cartitems').where('user', '==', this.user.alias).get()
-    //   .then(snapshot => {
-    //     snapshot.forEach(doc => {
-    //         //console.log(doc.data());
-    //         this.cartitem = doc.data()
-    //         this.cartitem.id = doc.id
-    //         this.cartitems.push(cartitem) 
-
-    //     })
-    //   }).catch(function(error) {
-    //     console.log("Error getting documents: ", error);
-    // })
   },
   methods:{
     priceSum(){

@@ -10,14 +10,14 @@
         <div class="divider"></div>
     </div>
     <div class="add_comment">
-        <form @submit.prevent="addComment">
+        <form @keyup.enter="addComment">
             <div>
                 <label for="comment">Add a Comment</label>
                 <textarea id="textarea2" class="materialize-textarea" data-length="120" v-model="newComment"></textarea>
                 <p v-if="feedback" class="red-text center">{{feedback}}</p>
             </div>
             <div class="field center-align btn_box">
-                <button class="btn waves-effect waves-light deep-orange lighten-1">Add Comment</button>
+                <button class="btn waves-effect waves-light deep-orange lighten-1" @click="addComment">Add Comment</button>
             </div>
         </form>
     </div>

@@ -7,7 +7,7 @@
           <ul class="right">
             <li><router-link :to="{name : 'Add'}">상품등록</router-link></li>
             <li><router-link :to="{name : 'Cart'}"><i class="material-icons white-text">local_grocery_store</i></router-link></li>
-            <li><router-link :to="{name : 'Wish'}"><i class="material-icons white-text">favorite</i></router-link></li>
+            <!-- <li><router-link :to="{name : 'Wish'}"><i class="material-icons white-text">favorite</i></router-link></li> -->
             <li v-if="!user"><router-link :to="{name: 'Signup'}">Signup</router-link></li>
             <li v-if="!user"><router-link :to="{name: 'Login'}">Login</router-link></li>
             <li v-if="user"><a>{{user.email}}</a></li>
@@ -40,6 +40,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if(user){//user 값이 null이 아니라면(=로그인된상태라면)
         this.user = user
+        console.log(user);
       }else {//로그아웃된 상태라면 
         this.user = null
       }
