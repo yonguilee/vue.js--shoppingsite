@@ -75,14 +75,9 @@ export default {
     .then(snapshot=>{
       snapshot.forEach(doc => {
         this.user =doc.data(),
-
-        this.user.id = doc.id//,
-
+        this.user.id = doc.id//
       })
-
-
     })
-
   },
   methods:{
     priceSum(){
@@ -119,16 +114,13 @@ export default {
             return cartitem.id !=id //deleteSmoothie에서 보낸 인자 id와 아이디가 일치하지 않는다면 (ture가된다면,)리스트에 남기자.
           })
         })
-        }
-      
+       }      
     }
-  },
-
+  }
 }
 </script>
 
 <style scoped>
-
 table th, td{
     text-align: center;
 }
