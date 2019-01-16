@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <div class="add-item container">
-    <h2 class="center-align"> Add New Item</h2>
-    <form @submit.prevent="Additem">
+      <h2 class="center-align"> Add New Item</h2>
+      <form @submit.prevent="Additem">
         <div class="row">
           <div class="input-field col s8">
             <p class="sub_title">Item Title</p>
@@ -100,8 +100,8 @@
             <p v-if="feedback" class="red-text">{{feedback}}</p>
             <button class="btn waves-effect waves-light deep-orange lighten-1">Add Item</button>
         </div>
-    </form>
-  </div>
+      </form>
+    </div>
   </div>
 </template>
 
